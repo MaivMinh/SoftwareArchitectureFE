@@ -8,11 +8,9 @@ const getRole = () => {
 };
 const filterRoute = (items: IRoute[]) => {
   // TODO: do later, check role ...
-  const filteredNavigation: IRoute[] = [];
+  const filteredNavigation: IRoute[] = items;
 
-  const filteredRoutes = filteredNavigation.filter(
-    item => !item.children && item.component
-  );
+  const filteredRoutes = filteredNavigation.filter(item => !item.children);
 
   return {
     filteredNavigation,

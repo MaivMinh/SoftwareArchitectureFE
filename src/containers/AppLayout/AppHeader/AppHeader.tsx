@@ -25,15 +25,18 @@ const AppHeader: React.FC<{ onClickSiderIcon: () => void }> = ({
   return (
     <Header className="bg-white px-[16px] select-none border-b h-[48px] leading-[48px] flex justify-between">
       <div className="flex items-center">
-        <MenuOutlined className="cursor-pointer" onClick={onClickSiderIcon} />
+        <MenuOutlined
+          className="cursor-pointer text-[20px]"
+          onClick={onClickSiderIcon}
+        />
       </div>
       <div className="flex items-center">
         <Dropdown menu={{ items: userMenuItems }} trigger={['click']}>
           <span className="relative ml-[16px] cursor-pointer">
             {/*TODO: chỉnh khi có api */}
             <Avatar icon={<UserOutlined />} />
-            <span className="label">name</span>
-            <DownOutlined />
+            <span className="label ml-[8px]">Nguyễn Thúc Minh Nhật</span>
+            <DownOutlined className="ml-[8px]" />
           </span>
         </Dropdown>
       </div>
