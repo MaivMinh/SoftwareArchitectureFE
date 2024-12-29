@@ -2,7 +2,7 @@ import React from 'react';
 import { Result } from 'antd';
 import { BackToHomeButton, LogoutButton } from 'components/shared/Button';
 
-const Page403: React.FC = () => {
+const Page404: React.FC = () => {
   return (
     <Result
       className="app-result-page"
@@ -19,4 +19,4 @@ const Page403: React.FC = () => {
   );
 };
 
-export default Page403;
+export default Page404;
