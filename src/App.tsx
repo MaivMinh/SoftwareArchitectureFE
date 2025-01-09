@@ -14,6 +14,9 @@ const App: React.FC = () => {
         <Route exact path="/404" component={Page404} />
         <Route exact path="/500" component={Page500} />
         <Route path="/" component={AppLayout} />
+        <Route path={'/accounts'} component={AppLayout} />
+        <Route path={'/players'} component={AppLayout} />
+        <Route path={'/brands'} component={AppLayout} />
       </Switch>
     </Router>
   );
