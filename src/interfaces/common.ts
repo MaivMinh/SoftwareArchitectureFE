@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface IRoute {
   exact?: boolean;
   path: string;
@@ -5,9 +7,5 @@ export interface IRoute {
   title?: string;
   icon?: React.ComponentType<{ className?: string }>;
   component?: React.ElementType;
-  role?: IRole[];
   children: string[];
-}
-export interface IRole {
-  name: string;
 }

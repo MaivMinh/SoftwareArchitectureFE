@@ -2,6 +2,7 @@ import { IRoute } from '../interfaces';
 import { HomeOutlined } from '@ant-design/icons';
 import adminRoutes from './admin';
 import brandRoutes from './brand';
+import Home from 'containers/Home';
 
 const routes: IRoute[] = [
   {
@@ -9,8 +10,8 @@ const routes: IRoute[] = [
     path: '/',
     name: 'Trang chủ',
     icon: HomeOutlined,
+    component: Home,
   },
-  // TODO: check role rồi chọn loại route mong muốn
   ...adminRoutes,
   ...brandRoutes,
 ];

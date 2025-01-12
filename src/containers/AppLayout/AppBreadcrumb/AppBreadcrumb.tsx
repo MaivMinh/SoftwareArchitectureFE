@@ -27,7 +27,7 @@ const AppBreadcrumb: React.FC = () => {
 
   return (
     <div className="flex items-center">
-      <Breadcrumb className="p-[10px] text-[12px] leading-[16px]">
+      <Breadcrumb className="p-4 text-[12px] leading-[16px]">
         {linkableRoutes.map(item => (
           <Breadcrumb.Item key={item.path}>
             {currentRoute?.path !== item.path ? (
