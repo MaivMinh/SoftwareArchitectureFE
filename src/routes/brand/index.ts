@@ -1,13 +1,15 @@
 import { IRoute } from 'interfaces';
 import { HomeOutlined } from '@ant-design/icons';
+import { lazy } from 'react';
+
+const Home = lazy(() => import('containers/Home'));
 const brandRoutes: IRoute[] = [
-  // TODO: add route for brand
-  // TODO: demo data, delete it later
   {
     exact: true,
     path: '/event',
     name: 'Sự kiện',
     icon: HomeOutlined,
+    component: Home,
     children: ['/event/create', '/event/manage'],
   },
   {

@@ -35,7 +35,6 @@ const AppLayout: React.FC = () => {
       />
       <Layout>
         <AppHeader onClickSiderIcon={toggleSider} />
-        {/*TODO: consider to use spin later */}
         <AppContent filteredRoutes={filteredRoutes} />
       </Layout>
     </Layout>
