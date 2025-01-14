@@ -1,7 +1,7 @@
 import { HomeOutlined } from '@ant-design/icons';
 import CreateAccount from 'containers/Admin/CreateAccount/CreateAccount';
 import ManageAccounts from 'containers/Admin/ManageAccounts';
-import ManagePlayers from 'containers/Admin/ManagePlayers';
+import ManageBrands from 'containers/Admin/ManageBrands';
 import { IRoute } from 'interfaces';
 
 const adminRoutes: IRoute[] = [
@@ -33,16 +33,17 @@ const adminRoutes: IRoute[] = [
 
   {
     exact: true,
-    path: '/players',
-    name: 'Người chơi',
-    component: ManagePlayers,
+    path: '/brands',
+    name: 'Thương hiệu',
     icon: HomeOutlined,
-    children: ['/players/manage', '/players/create'],
+    children: ['/brands/manage'],
   },
   {
     exact: true,
-    path: '/players/manage',
-    name: 'Quản lý người chơi',
+    path: '/brands/manage',
+    component: ManageBrands,
+    name: 'Quản lý thương hiệu',
+    role: ['ADMIN'],
     children: [],
   },
 ];
