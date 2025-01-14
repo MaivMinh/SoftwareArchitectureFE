@@ -6,6 +6,7 @@ export interface IRoute {
   name: string;
   title?: string;
   icon?: React.ComponentType<{ className?: string }>;
+  role?: string[];
   component?: React.ElementType;
   children: string[];
 }

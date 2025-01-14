@@ -5,6 +5,7 @@ import Page404 from './containers/shared/Page404';
 import Page500 from './containers/shared/Page500';
 import AppLayout from './containers/AppLayout';
 import { createBrowserHistory } from 'history';
+import Login from 'containers/Auth/Login';
 const App: React.FC = () => {
   return (
     // <AppRibb
@@ -14,9 +15,7 @@ const App: React.FC = () => {
         <Route exact path="/404" component={Page404} />
         <Route exact path="/500" component={Page500} />
         <Route path="/" component={AppLayout} />
-        <Route path={'/accounts'} component={AppLayout} />
-        <Route path={'/players'} component={AppLayout} />
-        <Route path={'/brands'} component={AppLayout} />
+        <Route path={'/login'} component={Login} />
       </Switch>
     </Router>
   );
