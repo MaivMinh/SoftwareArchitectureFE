@@ -1,8 +1,9 @@
-import { HomeOutlined } from '@ant-design/icons';
 import CreateAccount from 'containers/Admin/CreateAccount/CreateAccount';
 import ManageAccounts from 'containers/Admin/ManageAccounts';
 import ManageBrands from 'containers/Admin/ManageBrands';
 import { IRoute } from 'interfaces';
+import { UserOutlined, TeamOutlined } from '@ant-design/icons';
+import { ShopOutlined } from '@ant-design/icons';
 
 const adminRoutes: IRoute[] = [
   // TODO: add more routes for admin
@@ -11,7 +12,7 @@ const adminRoutes: IRoute[] = [
     exact: true,
     path: '/accounts',
     name: 'Tài khoản',
-    icon: HomeOutlined,
+    icon: UserOutlined,
     children: ['/accounts/manage', '/accounts/create'],
   },
   {
@@ -35,7 +36,7 @@ const adminRoutes: IRoute[] = [
     exact: true,
     path: '/brands',
     name: 'Thương hiệu',
-    icon: HomeOutlined,
+    icon: ShopOutlined,
     children: ['/brands/manage'],
   },
   {
@@ -43,6 +44,21 @@ const adminRoutes: IRoute[] = [
     path: '/brands/manage',
     component: ManageBrands,
     name: 'Quản lý thương hiệu',
+    role: ['ADMIN'],
+    children: [],
+  },
+  {
+    exact: true,
+    path: '/players',
+    name: 'Người chơi',
+    icon: TeamOutlined,
+    children: ['/players/manage'],
+  },
+  {
+    exact: true,
+    path: '/players/manage',
+    component: ManageBrands,
+    name: 'Quản lý người chơi',
     role: ['ADMIN'],
     children: [],
   },

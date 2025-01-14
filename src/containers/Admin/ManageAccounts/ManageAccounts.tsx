@@ -215,7 +215,7 @@ const ManageAccounts: React.FC = () => {
           <Form.Item
             name="email"
             label="Email"
-            rules={[{ required: true, message: 'Please input the email!' }]}
+            rules={[{ required: false, message: 'Please input the email!' }]}
           >
             <Input />
           </Form.Item>
@@ -223,7 +223,7 @@ const ManageAccounts: React.FC = () => {
             name="phoneNumber"
             label="Phone Number"
             rules={[
-              { required: true, message: 'Please input the phone number!' },
+              { required: false, message: 'Please input the phone number!' },
             ]}
           >
             <Input />
