@@ -1,14 +1,17 @@
 import { IRoute } from 'interfaces';
-import { HomeOutlined } from '@ant-design/icons';
+import { HomeOutlined, GiftOutlined } from '@ant-design/icons';
 import { lazy } from 'react';
+import CreateCampaign from 'containers/Brand/CreateCampaign';
+import CampaignManagement from 'containers/Brand/CampaignManagement';
 
 const Home = lazy(() => import('containers/Home'));
+
 const brandRoutes: IRoute[] = [
   {
     exact: true,
     path: '/event',
     name: 'Sự kiện',
-    icon: HomeOutlined,
+    icon: GiftOutlined,
     component: Home,
     children: ['/event/create', '/event/manage'],
   },
@@ -16,16 +19,19 @@ const brandRoutes: IRoute[] = [
     exact: true,
     path: '/event/create',
     name: 'Tạo sự kiện',
+    component: CreateCampaign,
   },
   {
     exact: true,
     path: '/event/manage',
     name: 'Quản lý sự kiện',
+    component: CampaignManagement,
   },
   {
     exact: true,
     path: '/brand',
     name: 'Thương hiệu',
+    component: Home,
     icon: HomeOutlined,
     children: ['/brand/create', '/brand/manage'],
   },
