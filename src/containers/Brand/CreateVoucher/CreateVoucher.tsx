@@ -1,47 +1,36 @@
 import React, { useState } from 'react';
-import {
-  Form,
-  Input,
-  Button,
-  DatePicker,
-  Select,
-  Upload,
-  message,
-  Radio,
-} from 'antd';
+import { Form, Input, Button, InputNumber, Upload, message, Radio } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import CentralizedSubMenu from 'components/shared/CentralizedSubMenu';
-import moment from 'moment';
-import { useHistory } from 'react-router-dom';
 import coreClient from 'service/core';
+import { useHistory } from 'react-router-dom';
 
 const { TextArea } = Input;
-const { Option } = Select;
 
-interface CampaignFormData {
+interface VoucherFormData {
   name: string;
+  value: number;
   imageUrl: string;
   description: string;
-  startDate: moment.Moment;
-  endDate: moment.Moment;
-  status: string;
+  brandId: number;
 }
 
-const CreateCampaign: React.FC = () => {
+const CreateVoucher: React.FC = () => {
   const [form] = Form.useForm();
   const [imageUrl, setImageUrl] = useState<string>(
-    'https://picsum.photos/200/300'
+    'https://picsum.photos/400/400'
   );
   const [uploadMethod, setUploadMethod] = useState<'url' | 'upload'>('url');
   const history = useHistory();
-  // Xử lý đăng kí chiến dịch
-  const onFinish = async (values: CampaignFormData) => {
+
+  const onFinish = async (values: VoucherFormData) => {
     try {
       const token = localStorage.getItem('access-token');
       if (!token) {
         message.error('Vui lòng đăng nhập để thực hiện chức năng này');
         return;
       }
+      const accountId = JSON.parse(localStorage.getItem('profile') || '{}').id;
       const header = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -49,30 +38,31 @@ const CreateCampaign: React.FC = () => {
       };
       const data = {
         name: values.name,
-        imageUrl,
-        startDate: values.startDate.toISOString().split('Z')[0],
-        endDate: values.endDate.toISOString().split('Z')[0],
-        status: values.status,
+        value: values.value,
+        imageUrl: values.imageUrl ? values.imageUrl : imageUrl,
         description: values.description,
+        brandId: accountId,
       };
 
-      console.log('form data:', data);
-
-      const response = await coreClient.post('/campaigns/create', data, header);
+      console.log('form data voucher:', data);
+      const response = await coreClient.post(
+        '/voucher-types/create',
+        data,
+        header
+      );
+      console.log('response voucher:', response);
       if (response.status === 200) {
-        message.success('Campaign created successfully.');
+        message.success('Tạo voucher thành côngcông');
         setTimeout(() => {
-          history.push('/event/manage');
+          history.push('/voucher/manage');
         }, 2000);
+        form.resetFields();
       } else if (response.status === 500) {
-        message.error(
-          'Error creating campaign due to system cause. Please try again later.'
-        );
+        message.error('Lỗi hệ thống, vui lòng thử lại sau.');
       }
-      console.log(response.data);
       form.resetFields();
     } catch (error) {
-      message.error('Error creating campaign');
+      message.error('Có lỗi xảy ra, vui lòng thử lại sau');
     }
   };
 
@@ -87,7 +77,7 @@ const CreateCampaign: React.FC = () => {
   };
 
   return (
-    <CentralizedSubMenu title="Tạo chiến dịch quảng bá thương hiệu">
+    <CentralizedSubMenu title="Tạo voucher mới">
       <Form
         form={form}
         layout="vertical"
@@ -95,32 +85,18 @@ const CreateCampaign: React.FC = () => {
         className="max-w-lg mx-auto p-4 bg-white shadow-md rounded"
       >
         <Form.Item
-          label="Tên chiến dịch"
+          label="Tên voucher"
           name="name"
-          rules={[{ required: true, message: 'Vui lòng nhập tên chiến dịch' }]}
+          rules={[{ required: true, message: 'Vui lòng nhập tên voucher' }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
-          label="Mô tả"
-          name="description"
-          rules={[{ required: true, message: 'Vui lòng nhập mô tả' }]}
+          label="Giá trị (%). Ví dụ: 30"
+          name="value"
+          rules={[{ required: true, message: 'Vui lòng nhập giá trị' }]}
         >
-          <TextArea />
-        </Form.Item>
-        <Form.Item
-          label="Ngày bắt đầu"
-          name="startDate"
-          rules={[{ required: true, message: 'Vui lòng chọn ngày bắt đầu' }]}
-        >
-          <DatePicker showTime className="w-full" />
-        </Form.Item>
-        <Form.Item
-          label="Ngày kết thúc"
-          name="endDate"
-          rules={[{ required: true, message: 'Vui lòng chọn ngày kết thúc' }]}
-        >
-          <DatePicker showTime className="w-full" />
+          <InputNumber min={0} className="w-full" />
         </Form.Item>
         <Form.Item label="Phương thức tải ảnh" name="uploadMethod">
           <Radio.Group
@@ -132,11 +108,19 @@ const CreateCampaign: React.FC = () => {
           </Radio.Group>
         </Form.Item>
         {uploadMethod === 'url' ? (
-          <Form.Item label="URL hình ảnh" name="imageUrl">
+          <Form.Item
+            label="URL hình ảnh"
+            name="imageUrl"
+            rules={[{ message: 'Vui lòng nhập URL hình ảnh' }]}
+          >
             <Input />
           </Form.Item>
         ) : (
-          <Form.Item label="Tải ảnh lên" name="upload">
+          <Form.Item
+            label="Tải ảnh lên"
+            name="upload"
+            rules={[{ required: true, message: 'Vui lòng tải lên hình ảnh' }]}
+          >
             <Upload
               name="file"
               action="/api/upload"
@@ -148,19 +132,15 @@ const CreateCampaign: React.FC = () => {
           </Form.Item>
         )}
         <Form.Item
-          label="Trạng thái"
-          name="status"
-          rules={[{ required: true, message: 'Vui lòng chọn trạng thái' }]}
+          label="Mô tả"
+          name="description"
+          rules={[{ required: true, message: 'Vui lòng nhập mô tả' }]}
         >
-          <Select className="w-full">
-            <Option value="On going">Upcoming</Option>
-            <Option value="Completed">Ongoing</Option>
-            <Option value="Pending">Ended</Option>
-          </Select>
+          <TextArea />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" className="w-full">
-            Tạo chiến dịch
+            Tạo voucher
           </Button>
         </Form.Item>
       </Form>
@@ -168,4 +148,4 @@ const CreateCampaign: React.FC = () => {
   );
 };
 
-export default CreateCampaign;
+export default CreateVoucher;
