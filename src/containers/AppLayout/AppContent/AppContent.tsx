@@ -6,6 +6,8 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 import ManageAccounts from 'containers/Admin/ManageAccounts';
 import CreateAccount from 'containers/Admin/CreateAccount';
 import Login from 'containers/Auth/Login';
+import ManageBrands from 'containers/Admin/ManageBrands';
+import ManagePlayers from 'containers/Admin/ManagePlayers';
 
 const { Content } = Layout;
 
@@ -35,6 +37,8 @@ const AppContent: React.FC<AppContentProps> = props => {
           })}
           <Route path={'/accounts/manage'} component={ManageAccounts} />
           <Route path={'/accounts/create'} component={CreateAccount} />
+          <Route path={'/brands/manage'} component={ManageBrands} />
+          <Route path={'/players/manage'} component={ManagePlayers} />
           <Route path={'/auth/login'} component={Login} />
           <Redirect from="/" to="/404" />
         </Switch>
