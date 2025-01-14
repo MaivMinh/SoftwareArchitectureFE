@@ -18,9 +18,18 @@ const AppHeader: React.FC<{ onClickSiderIcon: () => void }> = ({
       key: 'logout',
       icon: <LogoutOutlined />,
       label: 'Đăng xuất',
-      onClick: userHelpers.logout,
+      onClick: handleLogout,
     },
   ];
+
+  function handleLogout() {
+    const result = userHelpers.logout();
+    if (result) {
+      window.location.href = '/auth/login';
+    }
+  }
+
+  const profile = JSON.parse(localStorage.getItem('profile') || '{}');
 
   return (
     <Header className="bg-white px-[16px] select-none border-b h-[48px] leading-[48px] flex justify-between">
@@ -35,7 +44,7 @@ const AppHeader: React.FC<{ onClickSiderIcon: () => void }> = ({
           <span className="relative ml-[16px] cursor-pointer">
             {/*TODO: chỉnh khi có api */}
             <Avatar icon={<UserOutlined />} />
-            <span className="label ml-[8px]">Nguyễn Thúc Minh Nhật</span>
+            <span className="label ml-[8px]">{profile.username}</span>
             <DownOutlined className="ml-[8px]" />
           </span>
         </Dropdown>
