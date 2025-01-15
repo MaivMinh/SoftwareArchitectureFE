@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, message } from 'antd';
-import { Link } from 'react-router-dom';
+import { Card, Button, message, Modal, Form, Input, InputNumber } from 'antd';
 import CentralizedSubMenu from 'components/shared/CentralizedSubMenu';
 import coreClient from 'service/core';
 
@@ -15,6 +14,9 @@ interface Voucher {
 
 const VoucherManagement: React.FC = () => {
   const [vouchers, setVouchers] = useState<Voucher[]>([]);
+  const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     const fetchVouchers = async () => {
@@ -54,7 +56,7 @@ const VoucherManagement: React.FC = () => {
             brandId: item.brandId,
           }));
 
-          console.log('vouchersData:', vouchersData);
+          // console.log('vouchersData:', vouchersData);
           setVouchers(vouchersData);
           message.success('Lấy dữ liệu voucher thành công');
         } else {
@@ -67,21 +69,48 @@ const VoucherManagement: React.FC = () => {
 
     fetchVouchers();
   }, []);
+  const showModal = (voucher: Voucher) => {
+    setSelectedVoucher(voucher);
+    form.setFieldsValue(voucher);
+    setIsModalVisible(true);
+  };
 
-  // const handleDelete = async (id: string) => {
-  //   try {
-  //     const response = await .delete(`/api/vouchers/${id}`);
-  //     if (response.status === 200) {
-  //       setVouchers(vouchers.filter(voucher => voucher.id !== id));
-  //       message.success('Xóa voucher thành công');
-  //     } else {
-  //       message.error('Lỗi khi xóa voucher');
-  //     }
-  //   } catch (error) {
-  //     message.error('Có lỗi xảy ra, vui lòng thử lại sau');
-  //   }
-  // };
-
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setSelectedVoucher(null);
+  };
+  const handleOk = async () => {
+    try {
+      const values = await form.validateFields();
+      console.log('vales updata voucher', values);
+      const token = localStorage.getItem('access-token');
+      const header = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await coreClient.patch(
+        `/voucher-types/${selectedVoucher?.id}`,
+        values,
+        header
+      );
+      console.log('response update voucher:', response);
+      if (response.status === 200) {
+        setVouchers(
+          vouchers.map(v =>
+            v.id === selectedVoucher?.id ? { ...v, ...values } : v
+          )
+        );
+        message.success('Cập nhật voucher thành công');
+        setIsModalVisible(false);
+        setSelectedVoucher(null);
+      } else {
+        message.error('Lỗi khi cập nhật voucher');
+      }
+    } catch (error) {
+      message.error('Có lỗi xảy ra, vui lòng thử lại sau');
+    }
+  };
   return (
     <CentralizedSubMenu title="Quản lý voucher">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
@@ -95,22 +124,19 @@ const VoucherManagement: React.FC = () => {
                 <div className="h-48 w-full overflow-hidden">
                   <img
                     alt={voucher.name}
-                    src={
-                      voucher.imageUrl ||
-                      'https://via.placeholder.com/300?text=No+Image'
-                    }
+                    src={voucher.imageUrl}
                     className="object-cover h-full w-full p-2"
                   />
                 </div>
               }
             >
               <p>
-                Giá trị: {voucher.value} {'%'}
+                Giá trị: {voucher.value * 100} {'%'}
               </p>
               <p>{voucher.description}</p>
-              <div className="flex justify-between mt-4">
-                <Button type="primary">
-                  <Link to={`/vouchers/edit/${voucher.id}`}>Chỉnh sửa</Link>
+              <div className="flex justify-end mt-4">
+                <Button type="primary" onClick={() => showModal(voucher)}>
+                  <p>Chỉnh sửa</p>
                 </Button>
                 {/* <Button onClick={() => handleDelete(voucher.id)}>Xóa</Button> */}
               </div>
@@ -120,6 +146,36 @@ const VoucherManagement: React.FC = () => {
           <p className="text-center ">Không có voucher nào được tìm thấy</p>
         )}
       </div>
+      <Modal
+        title="Chỉnh sửa voucher"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Form form={form} layout="vertical">
+          <Form.Item
+            label="Tên voucher"
+            name="name"
+            rules={[{ required: true, message: 'Vui lòng nhập tên voucher' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Giá trị"
+            name="value"
+            rules={[{ required: true, message: 'Vui lòng nhập giá trị' }]}
+          >
+            <InputNumber min={0} className="w-full" />
+          </Form.Item>
+          <Form.Item
+            label="Mô tả"
+            name="description"
+            rules={[{ required: true, message: 'Vui lòng nhập mô tả' }]}
+          >
+            <Input.TextArea />
+          </Form.Item>
+        </Form>
+      </Modal>
     </CentralizedSubMenu>
   );
 };

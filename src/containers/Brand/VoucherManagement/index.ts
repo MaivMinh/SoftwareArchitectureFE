@@ -1,1 +1,3 @@
-export { default as VoucherManagement } from './VoucherManagement';
+import VoucherManagement from './VoucherManagement';
+
+export { VoucherManagement };

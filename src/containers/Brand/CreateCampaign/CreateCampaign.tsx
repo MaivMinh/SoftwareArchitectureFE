@@ -153,9 +153,9 @@ const CreateCampaign: React.FC = () => {
           rules={[{ required: true, message: 'Vui lòng chọn trạng thái' }]}
         >
           <Select className="w-full">
-            <Option value="On going">Upcoming</Option>
-            <Option value="Completed">Ongoing</Option>
-            <Option value="Pending">Ended</Option>
+            <Option value="Upcoming">Upcoming</Option>
+            <Option value="Ongoing">Ongoing</Option>
+            <Option value="Ended">Ended</Option>
           </Select>
         </Form.Item>
         <Form.Item>
