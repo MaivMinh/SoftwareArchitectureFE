@@ -4,6 +4,9 @@ import ManageBrands from 'containers/Admin/ManageBrands';
 import { IRoute } from 'interfaces';
 import { UserOutlined, TeamOutlined } from '@ant-design/icons';
 import { ShopOutlined } from '@ant-design/icons';
+import ManageGameTypes from 'containers/Admin/ManageGameTypes';
+import ManagePlayers from 'containers/Admin/ManagePlayers';
+import CreateGameTypes from 'containers/Admin/CreateGameTypes';
 
 const adminRoutes: IRoute[] = [
   // TODO: add more routes for admin
@@ -47,6 +50,7 @@ const adminRoutes: IRoute[] = [
     role: ['ADMIN'],
     children: [],
   },
+
   {
     exact: true,
     path: '/players',
@@ -57,8 +61,32 @@ const adminRoutes: IRoute[] = [
   {
     exact: true,
     path: '/players/manage',
-    component: ManageBrands,
+    component: ManagePlayers,
     name: 'Quản lý người chơi',
+    role: ['ADMIN'],
+    children: [],
+  },
+
+  {
+    exact: true,
+    path: '/game-types',
+    name: 'Loại trò chơi',
+    icon: TeamOutlined,
+    children: ['/game-types/manage', '/game-types/create'],
+  },
+  {
+    exact: true,
+    path: '/game-types/manage',
+    component: ManageGameTypes,
+    name: 'Quản lý loại trò chơi',
+    role: ['ADMIN'],
+    children: [],
+  },
+  {
+    exact: true,
+    path: '/game-types/create',
+    component: CreateGameTypes,
+    name: 'Tạo loại trò chơi',
     role: ['ADMIN'],
     children: [],
   },
