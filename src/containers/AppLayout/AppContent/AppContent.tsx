@@ -8,6 +8,8 @@ import CreateAccount from 'containers/Admin/CreateAccount';
 import Login from 'containers/Auth/Login';
 import ManageBrands from 'containers/Admin/ManageBrands';
 import ManagePlayers from 'containers/Admin/ManagePlayers';
+import ManageGameTypes from 'containers/Admin/ManageGameTypes';
+import CreateGameTypes from 'containers/Admin/CreateGameTypes';
 
 const { Content } = Layout;
 
@@ -39,6 +41,8 @@ const AppContent: React.FC<AppContentProps> = props => {
           <Route path={'/accounts/create'} component={CreateAccount} />
           <Route path={'/brands/manage'} component={ManageBrands} />
           <Route path={'/players/manage'} component={ManagePlayers} />
+          <Route path={'/game-types/manage'} component={ManageGameTypes} />
+          <Route path={'/game-types/create'} component={CreateGameTypes} />
           <Route path={'/auth/login'} component={Login} />
           <Redirect from="/" to="/404" />
         </Switch>

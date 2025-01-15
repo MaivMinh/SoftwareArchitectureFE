@@ -1,0 +1,29 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 100vh;
+  width: 100%; /* Ensure the form takes the full width */
+}
+
+.custom-form {
+  width: 80%; /* Ensure the form takes at least 80% of the width */
+  margin-left: 10%;
+  margin-right: 10%;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.custom-form:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.form-title {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
