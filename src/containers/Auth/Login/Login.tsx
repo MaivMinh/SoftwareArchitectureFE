@@ -21,6 +21,7 @@ const Login: React.FC = () => {
     const data = response.data;
     console.log(data);
     if (data.status === 200) {
+      const token = data.data.accessToken;
       localStorage.setItem('access-token', data.data.accessToken);
       localStorage.setItem('refresh-token', data.data.refreshToken);
       const profile = await authClient.get('/accounts/profile', {
@@ -28,9 +29,28 @@ const Login: React.FC = () => {
           Authorization: `Bearer ${data.data.accessToken}`,
         },
       });
+
       if (profile.data.status === 200) {
         localStorage.setItem('role', profile.data.data.role);
         localStorage.setItem('profile', JSON.stringify(profile.data.data));
+      }
+
+      if (profile.data.data.role === 'BRAND') {
+        const brandResponse = await authClient.get('/brands/profile', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (brandResponse.status !== 200) {
+          setError('Error fetching brand data');
+          return;
+        }
+        if (brandResponse.data.status === 200) {
+          localStorage.setItem(
+            'brand-id',
+            JSON.stringify(brandResponse.data.data.id)
+          );
+        }
       }
       history.push('/');
     } else {
